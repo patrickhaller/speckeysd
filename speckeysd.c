@@ -196,6 +196,8 @@ keypress(XEvent* ev0)
 void
 sighup_handler()
 {
+	if ( fork() == 0 )
+		exit(0);
 	execlp(argv0, argv0, argv1, NULL);
 }
 
