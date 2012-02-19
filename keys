@@ -1,6 +1,8 @@
 # Example keys file.
 # Key names come from <X11/keysymdef.h> (remove the XK_ prefix).
-#Super-f	firefox
+#
+# format = qr/^ KeyName (- KeyName)* \t Command $
+#
 Alt-Tab	window -circup
 Shift-Alt-ISO_Left_Tab	window -circdown
 Ctrl-Alt-r bash -c "echo run | dmenu | exec bash -s"
