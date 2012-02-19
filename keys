@@ -3,10 +3,12 @@
 #
 # format = qr/^ KeyName (- KeyName)* \t Command $
 #
-Alt-Tab	window -circup
-Shift-Alt-ISO_Left_Tab	window -circdown
-Ctrl-Alt-r bash -c "echo run | dmenu | exec bash -s"
-Ctrl-Alt-s bash -c "surf $( echo patrick.haller.ws | dmenu )"
-F8 wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
-F4 wmctrl -r Conky -b toggle,hide
-F10 wmctrl -r PlanHack -b toggle,hide
+Alt-Tab		x-alt-tab
+Shift-Alt-Tab	x-alt-tab -1 
+Alt-BackSpace	x-alt-tab -1
+Ctrl-Alt-h	killall -HUP speckeysd
+Ctrl-Alt-r	bash -c "echo run | dmenu | exec bash -s"
+Ctrl-Alt-s	bash -c "surf $( echo patrick.haller.ws | dmenu )"
+F8	wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+F4	wmctrl -r Conky -b toggle,hide
+F10	wmctrl -r PlanHack -b toggle,hide
