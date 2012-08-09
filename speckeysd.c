@@ -170,6 +170,8 @@ read_hot_key_file(const char* fname)
 		if (*buf == '#' || tab == NULL)
 			continue;
 		*tab = 0;
+		if (getenv("DEBUG") != NULL)
+			printf("%s -> %s", buf, tab+1);
 		add_hot_key(buf, tab+1);
 	}
 
@@ -196,8 +198,6 @@ keypress(XEvent* ev0)
 void
 sighup_handler()
 {
-	if ( fork() == 0 )
-		exit(0);
 	execlp(argv0, argv0, argv1, NULL);
 }
 
