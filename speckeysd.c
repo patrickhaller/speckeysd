@@ -213,6 +213,7 @@ int
 main(int argc, char* argv[])
 {
 	XEvent ev;
+	sigset_t set;
 
 	if (argc != 2)
 		panic("syntax: speckeysd <keys file>");
@@ -224,6 +225,8 @@ main(int argc, char* argv[])
 		panic("can't open display.");
 
 	/* Set up signal handlers. */
+	sigaddset(&set, SIGHUP);
+	sigprocmask(SIG_UNBLOCK, &set, NULL);
 	signal(SIGHUP, sighup_handler);
 	signal(SIGCHLD, sigchld_handler);
 
