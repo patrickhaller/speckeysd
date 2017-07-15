@@ -11,7 +11,7 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <X11/keysym.h>
+#include <X11/XKBlib.h>
 
 typedef struct HotKey HotKey;
 struct HotKey {
@@ -183,16 +183,14 @@ void
 keypress(XEvent* ev0)
 {
 	XKeyEvent* ev = (XKeyEvent*) ev0;
-	KeySym keysym = XKeycodeToKeysym(dpy, (KeyCode)ev->keycode, 0);
+	KeySym keysym = XkbKeycodeToKeysym(dpy, (KeyCode)ev->keycode, 0, 0);
 
 	HotKey* h = hotkeys;
 	for (; h != NULL; h = h->next) {
-		if (h->keysym == keysym)
-
-			if (h->keysym == keysym && ev->state == h->modifiers) {
-				shell(h->command);
-				break;
-			}
+        if (h->keysym == keysym && ev->state == h->modifiers) {
+            shell(h->command);
+            break;
+        }
 	}
 }
 
@@ -226,12 +224,9 @@ main(int argc, char* argv[])
     if ( -1 == stat(argv1, &statbuf) )
 		panic("syntax: speckeysd <keys file>\n   or ~/.speckeys.conf must exist");
 
-
-	/* Open a connection to the X server. */
 	if ( (dpy = XOpenDisplay("")) == 0)
 		panic("can't open display.");
 
-	/* Set up signal handlers. */
 	sigaddset(&set, SIGHUP);
 	sigprocmask(SIG_UNBLOCK, &set, NULL);
 	signal(SIGHUP, sighup_handler);
@@ -244,7 +239,6 @@ main(int argc, char* argv[])
 	/* Make sure all our communication to the server got through. */
 	XSync(dpy, False);
 
-	/* The main event loop. */
 	for (;;) {
 		XNextEvent(dpy, &ev);
 		switch (ev.type) {
@@ -255,7 +249,6 @@ main(int argc, char* argv[])
 				XRefreshKeyboardMapping((XMappingEvent*) &ev);
 				break;
 			default:
-				/* Do I look like I care? */
 				break;
 		}
 	}

@@ -1,5 +1,6 @@
 This is a fork of Elliot Hughes speckeysd; additions include:
 	added SIGHUP to restart speckeysd
+	added support for ~/.speckeys.conf
 
 
 From Elliot Hughes http://www.jessies.org/~enh/software/x11/
