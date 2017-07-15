@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include <unistd.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -30,7 +31,7 @@ Display* dpy;
 int screen_count;
 
 char* argv0;
-char* argv1;
+char argv1[512];
 
 const char* attempting_to_grab = 0;
 int report_key_grab_error(Display* d, XErrorEvent* e) {
@@ -214,11 +215,17 @@ main(int argc, char* argv[])
 {
 	XEvent ev;
 	sigset_t set;
+    struct stat statbuf;
 
-	if (argc != 2)
-		panic("syntax: speckeysd <keys file>");
+	argv0 = argv[0];
+	if ( argc == 2 )
+        strncpy(argv1, argv[1], sizeof(argv1)-1);
+    else
+        snprintf(argv1, sizeof(argv1)-1, "%s/.speckeys.conf", getenv("HOME"));
 
-	argv0 = argv[0], argv1 = argv[1];
+    if ( -1 == stat(argv1, &statbuf) )
+		panic("syntax: speckeysd <keys file>\n   or ~/.speckeys.conf must exist");
+
 
 	/* Open a connection to the X server. */
 	if ( (dpy = XOpenDisplay("")) == 0)
@@ -232,7 +239,7 @@ main(int argc, char* argv[])
 
 	screen_count = ScreenCount(dpy);
 
-	read_hot_key_file(argv[1]);
+	read_hot_key_file(argv1);
 
 	/* Make sure all our communication to the server got through. */
 	XSync(dpy, False);
