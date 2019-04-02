@@ -1,5 +1,13 @@
 Change Log for "speckeysd"
 
+2019-04-02  patrickh   
+
+	* remove Imake dependency
+
+2017-07-15  patrickh
+
+	* add reconfig via SIGHUP 
+
 2006-10-12	elliotth	San Jose
 
 	Various fixes suggested by Tuncer Ayaz, Adam Sampson, and Anselm R. Garbe:
